@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.configs.service;
+package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.entity.Role;
