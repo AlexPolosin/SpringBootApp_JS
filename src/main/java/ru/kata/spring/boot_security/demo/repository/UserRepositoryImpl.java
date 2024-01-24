@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.dao;
+package ru.kata.spring.boot_security.demo.repository;
 
 import org.springframework.stereotype.Repository;
 import ru.kata.spring.boot_security.demo.entity.User;
@@ -9,13 +9,15 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
-public class UserDaoImpl implements UserDao{
+public class UserRepositoryImpl implements UserRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
-    public void addUser(User user) { entityManager.persist(user); }
+    public void addUser(User user) {
+        entityManager.persist(user);
+    }
 
     @Override
     public List<User> getListUsers() {
@@ -37,7 +39,8 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public User getUser(Long id) {
-        User user = entityManager.find(User.class, id);
-        return user;
+        return entityManager.find(User.class, id);
     }
+
+
 }

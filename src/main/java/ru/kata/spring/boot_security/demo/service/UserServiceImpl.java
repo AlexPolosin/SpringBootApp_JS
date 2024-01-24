@@ -2,21 +2,30 @@ package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.dao.UserDao;
-import ru.kata.spring.boot_security.demo.entity.User;
+import ru.kata.spring.boot_security.demo.repository.UserJpaRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
+import ru.kata.spring.boot_security.demo.entity.User;
+
 
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserDetailsService, UserService {
+public class UserServiceImpl implements UserService {
+
+
+    private final UserRepository userDao;
+
+
+    private final UserJpaRepository userJpaRepository;
 
     @Autowired
-    private UserDao userDao;
+    public UserServiceImpl(UserRepository userDao, UserJpaRepository userJpaRepository) {
+        this.userDao = userDao;
+        this.userJpaRepository = userJpaRepository;
+    }
 
     @Override
     @Transactional
@@ -47,10 +56,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return userDao.getUser(id);
     }
 
-    @Autowired
-    private UserRepository userRepository;
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+        return userJpaRepository.findByUsername(username);
     }
     @Override
     @Transactional
@@ -62,5 +69,5 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
                 user.getAuthorities());
     }
-   
+
 }

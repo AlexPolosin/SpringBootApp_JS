@@ -26,7 +26,7 @@ public class User implements UserDetails {
 
     private String email;
 
-    @ManyToMany (fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToMany (fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable (name = "users_roles",
     joinColumns = @JoinColumn (name = "users_id"),
     inverseJoinColumns = @JoinColumn (name = "roles_id"))
