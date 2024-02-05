@@ -24,7 +24,7 @@ public class UserController {
 
     @GetMapping("")
     public String getListUsers(Model model, Principal principal) {
-        User user = (User) userService.loadUserByUsername(principal.getName());
+        User user = userService.findByUsername(principal.getName());
         model.addAttribute("user", user);
         return "user";
     }

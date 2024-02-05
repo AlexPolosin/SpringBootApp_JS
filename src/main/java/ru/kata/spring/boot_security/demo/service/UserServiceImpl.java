@@ -2,7 +2,6 @@ package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +47,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public boolean saveUser(User user) {
-        User savedUser = userRepository.save(user);
+        userRepository.save(user);
         return true;
     }
 
