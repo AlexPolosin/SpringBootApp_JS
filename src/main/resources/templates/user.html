@@ -12,7 +12,7 @@
             <div>
                 <span class="fw-bolder" th:text="${user.email}">Email address</span>
                 <span> with roles: </span>
-                <span th:text="${user.roles}">Roles</span>
+                <span th:text="${role.toString()}">Roles</span>
             </div>
             <a class="text-decoration-none font-weight-bold text-secondary" th:href="@{/logout}">Logout</a>
         </div>
@@ -52,7 +52,7 @@
                                     <td th:text="*{email}"/>
                                     <td>
                                         <th:block th:each="role : *{roles}">
-                                            <span th:text="${role.name}"/>
+                                            <span th:text="${role.toString()}"/>
                                         </th:block>
                                     </td>
                                 </tr>

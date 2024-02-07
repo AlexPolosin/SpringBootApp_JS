@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns="http://www.w3.org/1999/html">
+      xmlns="http://www.w3.org/1999/html" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Admin Page</title>
@@ -15,7 +15,7 @@
             <div>
                 <span class="fw-bolder" th:text="${user.email}">Email address</span>
                 <span> with roles: </span>
-                <span th:text="${user.roles}">Roles</span>
+                <span th:text="${role.toString()}">Roles</span>
             </div>
             <a class="text-decoration-none font-weight-bold text-secondary" th:href="@{/logout}">Logout</a>
         </div>
@@ -82,7 +82,7 @@
                                     <td th:text="*{user.email}"/>
                                     <td>
                                         <th:block th:each="role : *{user.roles}">
-                                            <span th:text="${role.name}"/>
+                                            <span th:text="${role.toString()}"/>
                                         </th:block>
                                     </td>
                                     <td>
@@ -111,28 +111,28 @@
                                         <div class="form-group m-3">
                                             <label for="username" class="col-form-label">Username</label>
                                             <input type="text" class="form-control" th:field="*{username}"
-                                                   id="username" placeholder="Username" required>
-                                        </div>
-                                        <div class="form-group m-3">
-                                            <label for="password" class="col-form-label">Password</label>
-                                            <input type="text" class="form-control" th:field="*{password}"
-                                                   id="password" placeholder="Password" required>
+                                                   id="username" value="" placeholder="Username" required/>
                                         </div>
                                         <div class="form-group m-3">
                                             <label for="name" class="col-form-label">Name</label>
                                             <input type="text" class="form-control" th:field="*{name}" id="name"
-                                                   placeholder="Name" required>
+                                                   value="" placeholder="Name" required/>
                                         </div>
                                         <div class="form-group m-3">
                                             <label for="email" class="col-form-label">Email</label>
                                             <input type="text" class="form-control" th:field="*{email}" id="email"
-                                                   placeholder="Email" required>
+                                                   value="" placeholder="Email" required/>
+                                        </div>
+                                        <div class="form-group m-3">
+                                            <label for="password" class="col-form-label">Password</label>
+                                            <input type="text" class="form-control" th:field="*{password}"
+                                                   id="password" value="" placeholder="Password" required/>
                                         </div>
                                         <div class="form-group m-3" aria-label="readonly">
                                             <label for="roles" class="form-label">Role</label>
                                             <select class="form-select" id="roles" size="2" name="roles" required>
                                                 <option th:each="role : ${roles}"
-                                                        th:text="${role.name}"
+                                                        th:text="${role.toString()}"
                                                         th:value="${role.id}"
                                                         th:field="*{roles}" selected>
                                                 </option>
@@ -180,14 +180,6 @@
                                                                    placeholder="username"/>
                                                         </div>
                                                         <div class="form-group m-3">
-                                                            <label for="updatePassword"
-                                                                   class="col-form-label">Password</label>
-                                                            <input type="text" class="form-control"
-                                                                   th:value="${user.password}"
-                                                                   id="updatePassword" name="password"
-                                                                   placeholder="password" disabled/>
-                                                        </div>
-                                                        <div class="form-group m-3">
                                                             <label for="updateName" class="col-form-label">Name</label>
                                                             <input type="text" class="form-control"
                                                                    th:value="${user.name}"
@@ -200,12 +192,20 @@
                                                                    th:value="${user.email}"
                                                                    id="updateEmail" name="email" placeholder="email"/>
                                                         </div>
+                                                        <div class="form-group m-3">
+                                                            <label for="updatePassword"
+                                                                   class="col-form-label">Password</label>
+                                                            <input type="password" class="form-control"
+                                                                   th:value="${user.password}"
+                                                                   id="updatePassword" name="password"
+                                                                   placeholder="password"/>
+                                                        </div>
                                                         <div class="form-group m-3" readonly="readonly">
                                                             <label for="updateRole">Role</label>
                                                             <select class="form-select w-100" size="2" id="updateRole"
                                                                     name="roles">
                                                                 <option th:each="role: ${roles}"
-                                                                        th:text="${role.name}"
+                                                                        th:text="${role.toString()}"
                                                                         th:value="${role.id}"
                                                                         selected>
                                                                 </option>
@@ -281,7 +281,7 @@
                                                             <select class="form-select" size="2" id="deleteRole"
                                                                     name="roles">
                                                                 <option th:each="role: ${user.getRoles()}"
-                                                                        th:text="${role.name}">
+                                                                        th:text="${role.toString()}">
                                                                 </option>
                                                             </select>
                                                         </div>
@@ -328,7 +328,7 @@
                                     <td th:text="*{email}"/>
                                     <td>
                                         <th:block th:each="role : *{roles}">
-                                            <span th:text="${role.name}"/>
+                                            <span th:text="${role.toString()}"/>
                                         </th:block>
                                     </td>
                                 </tr>

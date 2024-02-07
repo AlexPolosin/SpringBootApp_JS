@@ -11,6 +11,7 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import java.security.Principal;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -32,6 +33,10 @@ public class AdminController {
     public String getListUsers(Model model, Principal principal) {
         model.addAttribute("users", userService.getUsers());
         User user = userService.findByUsername(principal.getName());
+        Collection<Role> roles = user.getRoles();
+        for(Role role : roles) {
+            model.addAttribute("role", role);
+        }
         model.addAttribute("user", user);
         model.addAttribute("newUser", new User());
         model.addAttribute("roles", roleService.findAll());
