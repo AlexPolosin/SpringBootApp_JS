@@ -22,24 +22,16 @@ public class AdminController {
 
 
     private final UserService userService;
-    private final RoleService roleService;
 
     @Autowired
-    public AdminController(UserServiceImpl userService, RoleService roleService) {
+    public AdminController(UserServiceImpl userService) {
         this.userService = userService;
-        this.roleService = roleService;
     }
 
     @GetMapping("/api/admin")
     public ResponseEntity<List<User>> getListUsers() {
         List<User> users = userService.getUsers();
         return ResponseEntity.ok(users);
-    }
-
-    @GetMapping("/api/roles")
-    public ResponseEntity<List<Role>> getListRoles() {
-        List<Role> roles = roleService.findAll();
-        return ResponseEntity.ok(roles);
     }
 
     @PostMapping("/api/admin")
