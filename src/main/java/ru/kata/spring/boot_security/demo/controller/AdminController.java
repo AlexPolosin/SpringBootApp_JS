@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,12 +13,11 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import java.security.Principal;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
-@Controller
-@RequestMapping("/admin")
+@RestController
 public class AdminController {
 
 
@@ -29,59 +30,39 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-    @GetMapping("")
-    public String getListUsers(Model model, Principal principal) {
-        model.addAttribute("users", userService.getUsers());
-        User user = userService.findByUsername(principal.getName());
-        Collection<Role> roles = user.getRoles();
-        for(Role role : roles) {
-            model.addAttribute("role", role);
-        }
-        model.addAttribute("user", user);
-        model.addAttribute("newUser", new User());
-        model.addAttribute("roles", roleService.findAll());
-        return "admin";
+    @GetMapping("/api/admin")
+    public ResponseEntity<List<User>> getListUsers() {
+        List<User> users = userService.getUsers();
+        return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/create")
-    public String addUser(Model model) {
-        model.addAttribute("roles", roleService.findAll());
-        return "create";
+    @GetMapping("/api/roles")
+    public ResponseEntity<List<Role>> getListRoles() {
+        List<Role> roles = roleService.findAll();
+        return ResponseEntity.ok(roles);
     }
 
-    @PostMapping("/create")
-    public String saveUser(@ModelAttribute("newUser") User user) {
-
+    @PostMapping("/api/admin")
+    public ResponseEntity<User> createUser(@RequestBody User user) {
         userService.saveUser(user);
-
-        return "redirect:/admin";
-    }
-    @GetMapping("/delete/edit/id")
-    public String deleteUserForm(@RequestParam Long id, Model model) {
-        model.addAttribute("user", userService.findUserById(id));
-        return "delete";
+        return ResponseEntity.ok(user);
     }
 
-    @PostMapping("/delete/id")
-    public String deleteUser(@RequestParam Long id) {
+    @DeleteMapping("/api/admin/{id}")
+    public ResponseEntity<User> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
-        return "redirect:/admin";
+        return ResponseEntity.ok(userService.findUserById(id));
     }
 
-    @GetMapping("/update/edit/id")
-    public String updateUserForm(@RequestParam Long id, Model model) {
-        model.addAttribute("user", userService.findUserById(id));
-        return "update";
-    }
-
-    @PostMapping("/update/id")
-    public String updateUser(@RequestParam Long id, @ModelAttribute("user") User user) {
+    @PutMapping("/api/admin/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
         User updateUser = userService.findUserById(id);
+        updateUser.setUsername(user.getUsername());
         updateUser.setName(user.getName());
+        updateUser.setEmail(user.getEmail());
         updateUser.setPassword(user.getPassword());
         updateUser.setRoles(user.getRoles());
-        updateUser.setEmail(user.getEmail());
         userService.saveUser(updateUser);
-        return "redirect:/admin";
+        return ResponseEntity.ok(updateUser);
     }
 }
