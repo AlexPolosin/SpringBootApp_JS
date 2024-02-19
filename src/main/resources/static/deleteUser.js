@@ -20,7 +20,7 @@ on(document, 'click', '.btnDelete', e => {
 })
 deleteForm.addEventListener('submit', e => {
     e.preventDefault();
-    fetch(`/api/admin/${idDelete}`, {
+    fetch(`/admin/api/${idDelete}`, {
         method: 'DELETE'
     })
         .then(response => response.json())

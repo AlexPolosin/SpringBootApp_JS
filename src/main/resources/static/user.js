@@ -12,7 +12,7 @@ const getUser = user => {
 
     userConteiner.innerHTML = userResult;
 }
-fetch("/api/user")
+fetch("/user/api")
     .then(response => response.json())
     .then(data => getUser(data))
     .catch(error => console.log(error))

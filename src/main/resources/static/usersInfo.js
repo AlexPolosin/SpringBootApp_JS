@@ -1,4 +1,4 @@
-const url = 'http://localhost:8080/api/admin';
+const url = 'http://localhost:8080/admin/api';
 const conteiner = document.getElementById('usersForm');
 
 const getUsers = () => {

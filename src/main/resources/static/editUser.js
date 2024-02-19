@@ -28,7 +28,7 @@ editForm.addEventListener('submit', e => {
     if (updateRoles.length === 0) {
         updateRoles.push('ROLE_USER');
     }
-    fetch(`/api/admin/${idEdit}`, {
+    fetch(`/admin/api/${idEdit}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'

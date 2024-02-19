@@ -16,7 +16,7 @@ document.getElementById('createUser').addEventListener('submit', event => {
         roles: roles
     };
 
-    fetch('/api/admin', {
+    fetch('/admin/api', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

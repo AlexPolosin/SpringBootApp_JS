@@ -17,36 +17,53 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-@RestController
+@Controller
+@RequestMapping("/admin")
 public class AdminController {
 
 
     private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
-    public AdminController(UserServiceImpl userService) {
+    public AdminController(UserServiceImpl userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
-    @GetMapping("/api/admin")
+    @GetMapping
+    public String getAdminPage(Model model, Principal principal) {
+        model.addAttribute("users", userService.getUsers());
+        User user = userService.findByUsername(principal.getName());
+        Collection<Role> roles = user.getRoles();
+        for(Role role : roles) {
+            model.addAttribute("role", role);
+        }
+        model.addAttribute("user", user);
+        model.addAttribute("newUser", new User());
+        model.addAttribute("roles", roleService.findAll());
+        return "admin";
+    }
+
+    @GetMapping("/api")
     public ResponseEntity<List<User>> getListUsers() {
         List<User> users = userService.getUsers();
         return ResponseEntity.ok(users);
     }
 
-    @PostMapping("/api/admin")
+    @PostMapping("/api")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         userService.saveUser(user);
         return ResponseEntity.ok(user);
     }
 
-    @DeleteMapping("/api/admin/{id}")
+    @DeleteMapping("/api/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.ok(userService.findUserById(id));
     }
 
-    @PutMapping("/api/admin/{id}")
+    @PutMapping("/api/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
         User updateUser = userService.findUserById(id);
         updateUser.setUsername(user.getUsername());

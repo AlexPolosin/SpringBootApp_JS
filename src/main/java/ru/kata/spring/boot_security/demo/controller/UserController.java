@@ -16,7 +16,8 @@ import java.security.Principal;
 import java.util.Collection;
 
 
-@RestController
+@Controller
+@RequestMapping("/user")
 public class UserController {
 
 
@@ -27,7 +28,18 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(value = "/api/user")
+    @GetMapping
+    public String getUserPage(Model model, Principal principal) {
+        User user = userService.findByUsername(principal.getName());
+        Collection<Role> roles = user.getRoles();
+        model.addAttribute("user", user);
+        for(Role role : roles) {
+            model.addAttribute("role", role);
+        }
+        return "user";
+    }
+
+    @GetMapping("/api")
     public ResponseEntity<User> getUser(Principal principal) {
         User user = userService.findByUsername(principal.getName());
         return ResponseEntity.ok(user);
